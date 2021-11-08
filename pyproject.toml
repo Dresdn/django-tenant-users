@@ -67,7 +67,7 @@ django-stubs = "^1.9"
 
 wemake-python-styleguide = "^0.15"
 flake8-pytest-style = "^1.4"
-nitpick = "^0.28"
+nitpick = "^0.29"
 
 safety = "^1.10"
 
