@@ -1044,7 +1044,7 @@ pytest = "*"
 
 [[package]]
 name = "pytest-testmon"
-version = "1.2.2"
+version = "1.2.3"
 description = "selects tests affected by changed files and methods"
 category = "dev"
 optional = false
@@ -1052,7 +1052,7 @@ python-versions = ">=3.6"
 
 [package.dependencies]
 coverage = ">=4,<7"
-pytest = ">=5,<7"
+pytest = ">=5,<8"
 
 [[package]]
 name = "pytest-timeout"
@@ -1485,7 +1485,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "923c3a7ab0805366ff4dda9c4f7d89d930c32749ac914e9d25c45f4e36ec14cb"
+content-hash = "6d8eac414fde12d05c35c13d2061a0fb937f407ee69e7f3c3ca4f052b7e849d2"
 
 [metadata.files]
 alabaster = [
@@ -2018,7 +2018,7 @@ pytest-randomly = [
     {file = "pytest_randomly-3.11.0-py3-none-any.whl", hash = "sha256:a3c680d2b8150cf766311a80a1f92da64c3dd819045cda834fbf1b0ac4891610"},
 ]
 pytest-testmon = [
-    {file = "pytest-testmon-1.2.2.tar.gz", hash = "sha256:e69d5aeac4e371986f94e8ad06e56d70633870d026f2306fca44051f02fcb688"},
+    {file = "pytest-testmon-1.2.3.tar.gz", hash = "sha256:b201a3bbecc067b3974e749c7e6e032e1434a1a0ebd0d5b053668226ed63077c"},
 ]
 pytest-timeout = [
     {file = "pytest-timeout-2.1.0.tar.gz", hash = "sha256:c07ca07404c612f8abbe22294b23c368e2e5104b521c1790195561f37e1ac3d9"},
