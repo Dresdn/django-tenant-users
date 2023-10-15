@@ -1,6 +1,5 @@
 import pytest
 from django.contrib.auth import get_user_model
-
 from django_tenants.utils import get_tenant_model, schema_context
 
 #: Constants

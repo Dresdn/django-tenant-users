@@ -34,7 +34,7 @@ def common_db_setup(db, request):
 
 
 @pytest.fixture()
-def test_tenants(db, create_tenant):  # noqa: PT004
+def test_tenants(db, create_tenant):
     """Provision a few tenants for testing."""
     tenant_user = TenantUser.objects.get(email=TEST_USER_EMAIL)
     for tenant_slug in ("one", "two"):
@@ -47,7 +47,7 @@ def test_tenants(db, create_tenant):  # noqa: PT004
 def create_tenant():
     """Create tenant helper fixture."""
 
-    def create_tenant_function(  # noqa: WPS430
+    def create_tenant_function(
         tenant_user,
         tenant_slug,
         is_staff=False,

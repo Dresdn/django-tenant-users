@@ -94,10 +94,9 @@ class TenantBase(TenantMixin):
         """Add user to tenant."""
         # User already is linked here..
         if self.user_set.filter(id=user_obj.pk).exists():
+            msg = f"User already added to tenant: {user_obj}"
             raise ExistsError(
-                "User already added to tenant: {0}".format(
-                    user_obj,
-                ),
+                msg,
             )
 
         # User not linked to this tenant, so we need to create
@@ -125,10 +124,9 @@ class TenantBase(TenantMixin):
         # Dont allow removing an owner from a tenant. This must be done
         # Through delete tenant or transfer_ownership
         if user_obj.pk == self.owner.pk:
+            msg = f"Cannot remove owner from tenant: {self.owner}"
             raise DeleteError(
-                "Cannot remove owner from tenant: {0}".format(
-                    self.owner,
-                ),
+                msg,
             )
 
         user_tenant_perms = user_obj.usertenantpermissions
@@ -169,11 +167,7 @@ class TenantBase(TenantMixin):
         # Seconds since epoch, time() returns a float, so we convert to
         # an int first to truncate the decimal portion
         time_string = str(int(time.time()))
-        new_url = "{0}-{1}-{2}".format(
-            time_string,
-            str(self.owner.pk),
-            self.domain_url,
-        )
+        new_url = f"{time_string}-{self.owner.pk!s}-{self.domain_url}"
         self.domain_url = new_url
         # The schema generated each time (even with same url slug) will
         # be unique so we do not have to worry about a conflict with that
@@ -220,7 +214,7 @@ class TenantBase(TenantMixin):
 
         self.save()
 
-    class Meta(object):
+    class Meta:
         abstract = True
 
 
@@ -386,7 +380,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixinFacade):
     # Tracks whether the user's email has been verified
     is_verified = models.BooleanField(_("verified"), default=False)
 
-    class Meta(object):
+    class Meta:
         abstract = True
 
     def has_verified_email(self):

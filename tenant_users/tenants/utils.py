@@ -24,7 +24,7 @@ def create_public_tenant(
     owner_email,
     is_superuser=False,
     is_staff=False,
-    tenant_extra_data={},
+    tenant_extra_data=None,
     **owner_extra,
 ):
     """Create a public tenant with an owner user.
@@ -44,6 +44,8 @@ def create_public_tenant(
     * `Tuple[YourTenantModel, YourDomainModel, YourUserModel]`: A tuple containing the created public tenant, its domain, and the owner user.
     """
 
+    if tenant_extra_data is None:
+        tenant_extra_data = {}
     UserModel = get_user_model()
     TenantModel = get_tenant_model()
     public_schema_name = get_public_schema_name()
@@ -65,9 +67,7 @@ def create_public_tenant(
 
         # Check if the Public tenant type is defined
         if public_schema_name not in valid_tenant_types:
-            error_message = "Please define a '{0}' tenant type.".format(
-                public_schema_name,
-            )
+            error_message = f"Please define a '{public_schema_name}' tenant type."
             raise SchemaError(error_message)
 
         tenant_extra_data.update(

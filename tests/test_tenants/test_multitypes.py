@@ -38,6 +38,6 @@ def test_provision_tenant_with_invalid_tenant_type(tenant_user_admin):
     # Check if the correct exception message is raised
     assert str(
         excinfo.value
-    ) == "{0} is not a valid tenant type. Choices are {1}.".format(
+    ) == "{} is not a valid tenant type. Choices are {}.".format(
         invalid_tenant_type, ", ".join(valid_tenant_types)
     )

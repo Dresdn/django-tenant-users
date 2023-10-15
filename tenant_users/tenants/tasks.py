@@ -1,4 +1,3 @@
-import re
 import time
 
 from django.conf import settings
@@ -26,7 +25,7 @@ def provision_tenant(
     is_superuser=True,
     tenant_type=None,
     schema_name=None,
-    tenant_extra_data={},
+    tenant_extra_data=None,
 ):
     """Creates a tenant with default roles and permissions.
 
@@ -53,6 +52,8 @@ def provision_tenant(
     * `ExistsError`: If the tenant URL already exists.
     * `SchemaError`: If the tenant type is not valid."""
 
+    if tenant_extra_data is None:
+        tenant_extra_data = {}
     tenant = None
 
     UserModel = get_user_model()
@@ -65,7 +66,7 @@ def provision_tenant(
     if hasattr(settings, "TENANT_SUBFOLDER_PREFIX"):
         tenant_domain = tenant_slug
     else:
-        tenant_domain = "{0}.{1}".format(tenant_slug, settings.TENANT_USERS_DOMAIN)
+        tenant_domain = f"{tenant_slug}.{settings.TENANT_USERS_DOMAIN}"
 
     DomainModel = get_tenant_domain_model()
     if DomainModel.objects.filter(domain=tenant_domain).exists():
@@ -76,7 +77,7 @@ def provision_tenant(
         # https://www.postgresql.org/docs/9.2/static/sql-syntax-lexical.html#SQL-SYNTAX-IDENTIFIERS
         # We generate unique schema names each time so we can keep tenants around
         # without taking up url/schema namespace.
-        schema_name = "{0}_{1}".format(tenant_slug, time_string)
+        schema_name = f"{tenant_slug}_{time_string}"
 
     # Validate tenant type if multi-tenants are enabled
     if has_multi_type_tenants():
@@ -102,9 +103,9 @@ def provision_tenant(
                 owner=user,
                 **tenant_extra_data,
             )
-        except Exception as error:
+        except Exception:
             # Raise any error during tenant creation
-            raise error
+            raise
 
         # Create a domain associated with the tenant and mark as primary
         domain_model = get_tenant_domain_model()
@@ -112,16 +113,16 @@ def provision_tenant(
             domain_model.objects.create(
                 domain=tenant_domain, tenant=tenant, is_primary=True
             )
-        except Exception as error:
+        except Exception:
             # Raise any error during domain creation
-            raise error
+            raise
 
         # Add the user to the tenant with provided roles
         try:
             tenant.add_user(user, is_superuser=is_superuser, is_staff=is_staff)
-        except Exception as error:
+        except Exception:
             # Raise any error while adding the user
-            raise error
+            raise
 
     # Return the domain associated with the tenant
     return tenant_domain

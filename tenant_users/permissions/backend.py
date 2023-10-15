@@ -16,7 +16,5 @@ class UserBackend(ModelBackend):
     # UserTenantPermissions rather than from get_user_model()
     def _get_group_permissions(self, user_obj):
         user_groups_field = UserTenantPermissions._meta.get_field("groups")
-        user_groups_query = "group__{0}".format(
-            user_groups_field.related_query_name(),
-        )
+        user_groups_query = f"group__{user_groups_field.related_query_name()}"
         return Permission.objects.filter(**{user_groups_query: user_obj})

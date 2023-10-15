@@ -19,7 +19,7 @@ def main() -> None:
     )
 
     try:
-        from django.core import management  # noqa: WPS433
+        from django.core import management
     except ImportError:
         raise ImportError(
             "Couldn't import Django. Are you sure it's installed and "
