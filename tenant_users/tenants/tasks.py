@@ -56,8 +56,8 @@ def provision_tenant(
         tenant_extra_data = {}
     tenant = None
 
-    UserModel = get_user_model()
-    TenantModel = get_tenant_model()
+    UserModel = get_user_model()  # noqa: N806
+    TenantModel = get_tenant_model()  # noqa: N806
 
     user = UserModel.objects.get(email=user_email)
     if not user.is_active:
@@ -68,7 +68,7 @@ def provision_tenant(
     else:
         tenant_domain = f"{tenant_slug}.{settings.TENANT_USERS_DOMAIN}"
 
-    DomainModel = get_tenant_domain_model()
+    DomainModel = get_tenant_domain_model()  # noqa: N806
     if DomainModel.objects.filter(domain=tenant_domain).exists():
         raise ExistsError("Tenant URL already exists.")
     if not schema_name:

@@ -14,7 +14,7 @@ from tenant_users.tenants.models import ExistsError, SchemaError
 
 def get_current_tenant():
     current_schema = connection.schema_name
-    TenantModel = get_tenant_model()
+    TenantModel = get_tenant_model()  # noqa: N806
     tenant = TenantModel.objects.get(schema_name=current_schema)
     return tenant
 
@@ -46,8 +46,8 @@ def create_public_tenant(
 
     if tenant_extra_data is None:
         tenant_extra_data = {}
-    UserModel = get_user_model()
-    TenantModel = get_tenant_model()
+    UserModel = get_user_model()  # noqa: N806
+    TenantModel = get_tenant_model()  # noqa: N806
     public_schema_name = get_public_schema_name()
 
     if TenantModel.objects.filter(schema_name=public_schema_name).first():
