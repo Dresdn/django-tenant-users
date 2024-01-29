@@ -41,7 +41,7 @@ UserProfile Manager
 The ``UserProfileManager`` is a custom manager for the ``UserProfile`` model. This
 provides additional methods and utilities for user-related operations.
 
-.. autoclass:: tenant_users.tenants.models.UserProfileManager
+.. autoclass:: tenant_users.tenants.managers.UserProfileManager
    :members:
    :undoc-members:
    :show-inheritance:
