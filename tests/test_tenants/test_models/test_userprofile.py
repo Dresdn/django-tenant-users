@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from hypothesis import given, settings
 from hypothesis.extra import django
 
-from tenant_users.tenants.models import DeleteError
+from tenant_users.tenants.exceptions import DeleteError
 
 #: Constants
 TenantUser = get_user_model()

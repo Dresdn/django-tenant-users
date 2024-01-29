@@ -8,7 +8,7 @@ TenantUser = get_user_model()
 
 
 @pytest.mark.django_db()
-@patch("tenant_users.tenants.models.tenant_user_created.send")
+@patch("tenant_users.tenants.signals.tenant_user_created.send")
 def test_user_created_signal(mock):
     """Ensure signal is sent for delete_user()."""
     TenantUser.objects.create_user("created@signal.com")
@@ -17,7 +17,7 @@ def test_user_created_signal(mock):
 
 
 @pytest.mark.django_db()
-@patch("tenant_users.tenants.models.tenant_user_deleted.send")
+@patch("tenant_users.tenants.signals.tenant_user_deleted.send")
 def test_user_deleted_signal(mock, tenant_user):
     """Ensure signal is sent for delete_user()."""
     TenantUser.objects.delete_user(tenant_user)

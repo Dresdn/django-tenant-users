@@ -2,7 +2,7 @@ import pytest
 from django_tenants.utils import get_tenant_model, get_tenant_types
 
 from tenant_users.tenants import tasks
-from tenant_users.tenants.models import SchemaError
+from tenant_users.tenants.exceptions import SchemaError
 
 
 @pytest.mark.usefixtures("_tenant_type_settings")

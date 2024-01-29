@@ -8,7 +8,7 @@ from django.contrib.auth import get_user_model
 from django.db import DatabaseError, connection
 from django_tenants.utils import get_tenant_model
 
-from tenant_users.tenants.models import ExistsError, InactiveError
+from tenant_users.tenants.exceptions import ExistsError, InactiveError
 from tenant_users.tenants.tasks import provision_tenant
 
 #: Constants

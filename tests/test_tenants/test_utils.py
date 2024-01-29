@@ -7,7 +7,7 @@ from django_tenants.utils import get_public_schema_name, schema_context
 from django_test_app.companies.models import Company, Domain
 from django_test_app.users.models import TenantUser
 from tenant_users.tenants import utils
-from tenant_users.tenants.models import ExistsError, SchemaError
+from tenant_users.tenants.exceptions import ExistsError, SchemaError
 
 
 def test_get_current_tenant(public_tenant, test_tenants):

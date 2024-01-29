@@ -2,7 +2,7 @@ import pytest
 from django.contrib.auth import get_user_model
 from django_tenants.utils import get_tenant_model, schema_context
 
-from tenant_users.tenants import models
+from tenant_users.tenants.exceptions import DeleteError, ExistsError, SchemaError
 
 #: Constants
 TenantModel = get_tenant_model()
@@ -14,7 +14,7 @@ def test_create_user_in_tenant_schema(test_tenants):
     """Ensures error is raised when user creation isn't in public schema."""
     tenant = test_tenants.first()
     with schema_context(tenant.schema_name), pytest.raises(
-        models.SchemaError,
+        SchemaError,
         match="Schema must be public",
     ):
         TenantUser.objects.create_user(email="user@schema.com")
@@ -48,7 +48,7 @@ def test_create_user_without_password():
 @pytest.mark.django_db()
 def test_create_duplicate_user(tenant_user):
     """Ensures duplicate users can't exist."""
-    with pytest.raises(models.ExistsError, match="User already exists"):
+    with pytest.raises(ExistsError, match="User already exists"):
         TenantUser.objects.create_user(tenant_user.email)
 
 
@@ -65,7 +65,7 @@ def test_delete_user(tenant_user):
 def test_delete_public_owner(public_tenant):
     """Ensure inability to delete public tenant owner."""
     with pytest.raises(
-        models.DeleteError,
+        DeleteError,
         match="Cannot delete the public tenant owner",
     ):
         TenantUser.objects.delete_user(public_tenant.owner)

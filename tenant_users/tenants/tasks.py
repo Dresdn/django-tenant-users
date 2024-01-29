@@ -13,7 +13,7 @@ from django_tenants.utils import (
     schema_context,
 )
 
-from tenant_users.tenants.models import ExistsError, InactiveError, SchemaError
+from tenant_users.tenants.exceptions import ExistsError, InactiveError, SchemaError
 
 
 @transaction.atomic()

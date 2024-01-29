@@ -9,7 +9,7 @@ from django_tenants.utils import (
     has_multi_type_tenants,
 )
 
-from tenant_users.tenants.models import ExistsError, SchemaError
+from tenant_users.tenants.exceptions import ExistsError, SchemaError
 
 
 def get_current_tenant():
