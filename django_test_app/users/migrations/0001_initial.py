@@ -1,3 +1,4 @@
+import django.core.validators
 from django.db import migrations, models
 
 from tenant_users.permissions.models import PermissionsMixinFacade
@@ -47,6 +48,7 @@ class Migration(migrations.Migration):
                         max_length=254,
                         unique=True,
                         verbose_name="Email Address",
+                        validators=[django.core.validators.EmailValidator()],
                     ),
                 ),
                 (

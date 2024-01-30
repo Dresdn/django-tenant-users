@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from tenant_users.permissions.models import PermissionsMixinFacade
 from tenant_users.tenants.exceptions import DeleteError
-from tenant_users.tenants.managers import UserProfileManager
+from tenant_users.tenants.managers import TenantUserManager, UserProfileManager
 
 
 # This cant be located in the users app otherwise it would get loaded into
@@ -72,3 +72,43 @@ class UserProfile(AbstractBaseUser, PermissionsMixinFacade):
     def get_full_name(self):
         """Return string representation."""
         return str(self)
+
+
+class AbstractBaseTenantUser(AbstractBaseUser, PermissionsMixinFacade):
+    """Authentication model for django-tenant-users stored in the public tenant schema.
+
+    This class represents an authentication-only model that is centrally located in the public tenant schema,
+    yet maintains a link to the UserTenantPermissions model for authorization. It enables a singular global
+    user profile across all tenants while allowing permissions to be managed on a per-tenant basis. This design
+    ensures a unified user identity across different tenants with distinct permission sets in each tenant context.
+
+    Access to a user's permissions requires routing the request through the relevant tenant. The implementation
+    necessitates using the ModelBackend for proper integration.
+
+    Inherits:
+        AbstractBaseUser: Django's base class for user models, providing core user authentication features.
+        PermissionsMixinFacade: A facade to adapt Django's PermissionMixin for multi-tenant environments.
+    """
+
+    objects = TenantUserManager()
+
+    tenants = models.ManyToManyField(
+        settings.TENANT_MODEL,
+        verbose_name=_("tenants"),
+        blank=True,
+        help_text=_("The tenants this user belongs to."),
+        related_name="user_set",
+    )
+
+    is_active = models.BooleanField(_("active"), default=True)
+
+    class Meta:
+        abstract = True
+
+    def delete(self, *args, force_drop: bool = False, **kwargs):
+        if force_drop:
+            super().delete(*args, **kwargs)
+        else:
+            raise DeleteError(
+                "UserProfile.objects.delete_user() should be used.",
+            )

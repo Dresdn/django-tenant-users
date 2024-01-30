@@ -1,4 +1,4 @@
 from tenant_users.tenants.models.tenant import TenantBase
-from tenant_users.tenants.models.user import UserProfile
+from tenant_users.tenants.models.user import AbstractBaseTenantUser, UserProfile
 
-__all__ = ["TenantBase", "UserProfile"]
+__all__ = ["TenantBase", "AbstractBaseTenantUser", "UserProfile"]

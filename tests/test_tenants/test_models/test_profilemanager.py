@@ -1,8 +1,9 @@
 import pytest
 from django.contrib.auth import get_user_model
+from django.db import IntegrityError
 from django_tenants.utils import get_tenant_model, schema_context
 
-from tenant_users.tenants.exceptions import DeleteError, ExistsError, SchemaError
+from tenant_users.tenants.exceptions import DeleteError, SchemaError
 
 #: Constants
 TenantModel = get_tenant_model()
@@ -32,7 +33,7 @@ def test_create_user_with_password(client):
     """Ensures created user with password is valid."""
     secret = "Secret#"  # noqa: S105
     email = "user@test.com"
-    user = TenantUser.objects.create_user(email, password=secret)
+    user = TenantUser.objects.create_user(email=email, password=secret)
 
     assert user.has_usable_password() is True
     assert client.login(username=email, password=secret) is True
@@ -41,15 +42,15 @@ def test_create_user_with_password(client):
 @pytest.mark.django_db()
 def test_create_user_without_password():
     """Ensures created user gets unusable password if excluded."""
-    user = TenantUser.objects.create_user("user@test.com")
+    user = TenantUser.objects.create_user(email="user@test.com")
     assert user.has_usable_password() is False
 
 
 @pytest.mark.django_db()
 def test_create_duplicate_user(tenant_user):
     """Ensures duplicate users can't exist."""
-    with pytest.raises(ExistsError, match="User already exists"):
-        TenantUser.objects.create_user(tenant_user.email)
+    with pytest.raises(IntegrityError, match="duplicate key value"):
+        TenantUser.objects.create_user(email=tenant_user.email)
 
 
 @pytest.mark.django_db()
@@ -75,7 +76,7 @@ def test_delete_public_owner(public_tenant):
 def test_delete_tenant_owner(create_tenant, public_tenant):
     """Ensure tenant is disabled when owner is deleted."""
     # Create a temp tenant with new user
-    user = TenantUser.objects.create_user("temp@tenant.com")
+    user = TenantUser.objects.create_user(email="temp@tenant.com")
     tenant = create_tenant(user, "pytesttemp")
 
     # Action below

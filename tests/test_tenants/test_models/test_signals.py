@@ -11,7 +11,7 @@ TenantUser = get_user_model()
 @patch("tenant_users.tenants.signals.tenant_user_created.send")
 def test_user_created_signal(mock):
     """Ensure signal is sent for delete_user()."""
-    TenantUser.objects.create_user("created@signal.com")
+    TenantUser.objects.create_user(email="created@signal.com")
     assert mock.called is True
     assert mock.call_count == 1
 

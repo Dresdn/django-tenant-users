@@ -16,15 +16,6 @@ def test_model_properties(instance: TenantUser) -> None:
     """Tests that instance can be saved and has correct representation."""
     instance.save()
 
-    # Test UserProfile.has_verified_email()
-    assert instance.has_verified_email() == instance.is_verified
-
-    # Test UserProfile.get_full_name()
-    assert instance.get_full_name() == str(instance)
-
-    # Test UserProfile.get_short_name()
-    assert instance.get_short_name() == instance.email
-
 
 @pytest.mark.django_db()
 @given(django.from_model(TenantUser))

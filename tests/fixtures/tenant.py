@@ -19,7 +19,7 @@ def tenant_user_admin(db) -> TenantUser:  # noqa: ARG001
     """Returns Admin User instance."""
     with schema_context("public"):
         return TenantUser.objects.create_superuser(
-            _USER_PASS,
+            password=_USER_PASS,
             email="super@user.com",
         )
 
